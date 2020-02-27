@@ -1,13 +1,3 @@
-variable "depends_on" {
-  default = []
-}
-
-resource "null_resource" "depends_on" {
-  triggers {
-    depends_on = "${join("", var.depends_on)}"
-  }
-}
-
 locals {
   asg_tags = ["${null_resource.tags_as_list_of_maps.*.triggers}"]
 
