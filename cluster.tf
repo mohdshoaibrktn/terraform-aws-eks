@@ -1,3 +1,13 @@
+variable "depends_on" {
+  default = []
+}
+
+resource "null_resource" "depends_on" {
+  triggers {
+    depends_on = "${join("", var.depends_on)}"
+  }
+}
+
 resource "aws_eks_cluster" "this" {
   name                      = "${var.cluster_name}"
   enabled_cluster_log_types = "${var.cluster_enabled_log_types}"
@@ -19,6 +29,7 @@ resource "aws_eks_cluster" "this" {
   depends_on = [
     "aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy",
     "aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy",
+    "null_resource.depends_on"
   ]
 }
 
